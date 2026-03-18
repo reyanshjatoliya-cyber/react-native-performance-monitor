@@ -1,5 +1,5 @@
 {
-  "name": "react-native-performance-monitor",
+  "name": "react-native-performance-monitors",
   "version": "0.1.0",
   "description": "Monitor and analyze JavaScript thread performance in React Native apps with real-time usage, event loop lag, FPS tracking, and freeze detection. real-time usage, event loop lag, FPS tracking, and freeze detection.",
   "main": "./lib/module/index.js",
