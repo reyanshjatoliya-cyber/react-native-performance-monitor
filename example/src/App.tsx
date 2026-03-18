@@ -1,20 +1,53 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { multiply } from 'react-native-performance-monitor';
+import { useEffect } from 'react';
+import { View, Text, ScrollView } from 'react-native';
+import {
+  initPerformanceMonitor,
+  PerformanceOverlay,
+  useLeakDetector,
+} from 'react-native-performance-monitor';
 
-const result = multiply(3, 7);
+initPerformanceMonitor();
+
+const LeakyComponent = () => {
+  useLeakDetector('LeakyComponent');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log('Running...');
+    }, 1000);
+
+    // ❌ Forgot cleanup
+    // return () => clearInterval(interval);
+  }, []);
+
+  return <Text>Leaky Component</Text>;
+};
+
+const HeavyComponent = () => {
+  // simulate JS blocking
+  const blockJS = () => {
+    const start = Date.now();
+    while (Date.now() - start < 200) {}
+  };
+
+  return (
+    <View>
+      <Text onPress={blockJS}>Click to Block JS Thread</Text>
+    </View>
+  );
+};
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
+    <View style={{ flex: 1, marginVertical: 50 }}>
+      <ScrollView>
+        {Array.from({ length: 200 }).map((_, i) => (
+          <Text key={i}>Item {i}</Text>
+        ))}
+        <HeavyComponent />
+      </ScrollView>
+      <PerformanceOverlay />
+      <LeakyComponent />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
