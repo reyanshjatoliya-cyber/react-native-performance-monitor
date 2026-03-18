@@ -1,12 +1,10 @@
-import LeakMonitor from '../monitors/LeakMonitor';
-
 const originalSetInterval = global.setInterval;
 const originalClearInterval = global.clearInterval;
 
 const intervalMap = new Map();
 
 export const patchTimers = () => {
-  global.setInterval = (fn: any, delay?: number, ...args: any[]) => {
+  global.setInterval = ((fn: any, delay?: number, ...args: any[]) => {
     const id = originalSetInterval(fn, delay, ...args);
 
     intervalMap.set(id, {
@@ -14,7 +12,7 @@ export const patchTimers = () => {
     });
 
     return id;
-  };
+  }) as typeof setInterval;
 
   global.clearInterval = (id: any) => {
     intervalMap.delete(id);

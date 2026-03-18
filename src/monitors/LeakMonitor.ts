@@ -27,7 +27,7 @@ class LeakMonitor {
   removeResource(name: string, resource: any) {
     const item = this.tracked.get(name);
     if (item) {
-      item.resources = item.resources.filter((r) => r !== resource);
+      item.resources = item.resources.filter((r: any) => r !== resource);
     }
   }
 

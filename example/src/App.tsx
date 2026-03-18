@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+//import { useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import {
   initPerformanceMonitor,
@@ -11,14 +11,15 @@ initPerformanceMonitor();
 const LeakyComponent = () => {
   useLeakDetector('LeakyComponent');
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      console.log('Running...');
-    }, 1000);
+  // Simulate a memory leak by setting up an interval without cleanup
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     console.log('Running...');
+  //   }, 1000);
 
-    // ❌ Forgot cleanup
-    // return () => clearInterval(interval);
-  }, []);
+  //   // ❌ Forgot cleanup
+  //   // return () => clearInterval(interval);
+  // }, []);
 
   return <Text>Leaky Component</Text>;
 };
